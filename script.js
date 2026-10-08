@@ -133,29 +133,6 @@ function initialView() {
   return 'home';
 }
 
-function animateWords() {
-  document.querySelectorAll('.reveal-words').forEach((element) => {
-    const original = element.textContent;
-    element.setAttribute('aria-label', original);
-    element.textContent = '';
-    let index = 0;
-    original.split(/(\s+)/).forEach((part) => {
-      if (!part) return;
-      if (/^\s+$/.test(part)) {
-        element.append(document.createTextNode(part));
-        return;
-      }
-      const span = document.createElement('span');
-      span.className = 'word';
-      span.setAttribute('aria-hidden', 'true');
-      span.style.setProperty('--delay', Math.min(90 + index * 16, 720) + 'ms');
-      span.textContent = part;
-      element.append(span);
-      index += 1;
-    });
-  });
-}
-
 let activeView = initialView();
 let transitionInProgress = false;
 let queuedView = null;
@@ -170,14 +147,33 @@ function render(view, animateEntrance = false) {
   document.title = view === 'home'
     ? 'Eli Cottrell — Creative Technologist'
     : view[0].toUpperCase() + view.slice(1) + ' — Eli Cottrell';
-  animateWords();
-
   if (animateEntrance) {
     const card = app.querySelector('.primary-card');
     const secondary = app.querySelectorAll('.transition-secondary');
     card?.classList.add('card-enter');
     secondary.forEach((element) => element.classList.add('secondary-enter'));
   }
+}
+
+function afterAnimation(element, callback, fallbackDuration = 1200) {
+  if (!element) {
+    callback();
+    return;
+  }
+
+  let completed = false;
+  const finish = () => {
+    if (completed) return;
+    completed = true;
+    element.removeEventListener('animationend', handleAnimationEnd);
+    callback();
+  };
+  const handleAnimationEnd = (event) => {
+    if (event.target === element) finish();
+  };
+
+  element.addEventListener('animationend', handleAnimationEnd);
+  window.setTimeout(finish, fallbackDuration);
 }
 
 function changeView(nextView) {
@@ -188,28 +184,39 @@ function changeView(nextView) {
   }
 
   transitionInProgress = true;
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const exitDuration = reduceMotion ? 0 : 250;
-  const entranceDuration = reduceMotion ? 0 : 470;
-  app.querySelector('.primary-card')?.classList.add('card-exit');
-  app.querySelectorAll('.transition-secondary').forEach((element) => element.classList.add('secondary-exit'));
+  const outgoingView = app.firstElementChild.cloneNode(true);
+  outgoingView.classList.add('transition-ghost-view');
+  outgoingView.setAttribute('aria-hidden', 'true');
+  outgoingView.querySelectorAll('[id]').forEach((element) => element.removeAttribute('id'));
+  document.body.append(outgoingView);
 
-  window.setTimeout(() => {
-    activeView = nextView;
-    render(activeView, true);
-    window.scrollTo({ top: 0, behavior: 'instant' });
+  const outgoingCard = outgoingView.querySelector('.primary-card');
+  outgoingCard?.classList.remove('card-enter');
+  outgoingCard?.classList.add('card-exit');
+  outgoingView.querySelectorAll('.transition-secondary').forEach((element) => {
+    element.classList.remove('secondary-enter');
+    element.classList.add('secondary-exit');
+  });
 
-    window.setTimeout(() => {
-      transitionInProgress = false;
-      if (queuedView && queuedView !== activeView) {
-        const pendingView = queuedView;
-        queuedView = null;
-        changeView(pendingView);
-      } else {
-        queuedView = null;
-      }
-    }, entranceDuration);
-  }, exitDuration);
+  activeView = nextView;
+  render(activeView, true);
+  window.scrollTo({ top: 0, behavior: 'instant' });
+
+  afterAnimation(outgoingCard, () => outgoingView.remove());
+
+  const incomingCard = app.querySelector('.primary-card');
+  afterAnimation(incomingCard, () => {
+    incomingCard.classList.remove('card-enter');
+    app.querySelectorAll('.transition-secondary').forEach((element) => element.classList.remove('secondary-enter'));
+    transitionInProgress = false;
+    if (queuedView && queuedView !== activeView) {
+      const pendingView = queuedView;
+      queuedView = null;
+      changeView(pendingView);
+    } else {
+      queuedView = null;
+    }
+  });
 }
 
 document.addEventListener('click', (event) => {
