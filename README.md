@@ -8,4 +8,4 @@ Serve the directory with a static file server so the direct variant URLs resolve
 
 ## Personalize
 
-Projects, Skills, and Contact have navigable in-progress variants because the export did not provide completed content for them. The social tiles, footer items, and “Read our essay” remain intentionally unwired. “Visit website” opens the Seedcore site shown in the design.
+Projects, Skills, and Contact reproduce the desktop and mobile variants embedded in the Framer export. The Contact form is visual only until a delivery destination or form service is configured; submitting it displays an honest status message. The social tiles, footer items, and “Read our essay” remain intentionally unwired. “Visit website” opens the Seedcore site shown in the design.

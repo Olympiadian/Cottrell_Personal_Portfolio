@@ -11,6 +11,12 @@ const seedcoreParagraphs = [
 ];
 
 const views = new Set(['seedcore', 'about', 'projects', 'skills', 'contact']);
+const detailSubtitles = {
+  about: '25 | Working @ Kaeko Engineering. Based in the Phoenix area.',
+  projects: "A mix of recent things I've built that are worth exploring.",
+  skills: 'Design-forward, production capable, artistic developer. Contains a slight bias towards style.',
+  contact: 'Reach out to me.'
+};
 
 function escapeText(value) {
   return value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
@@ -53,7 +59,6 @@ function home() {
 
 function detailSidebar(view) {
   const isSeedcore = view === 'seedcore';
-  const isAbout = view === 'about';
   const title = view[0].toUpperCase() + view.slice(1);
   const bottom = isSeedcore
     ? '<img class="seedcore-logo" src="/assets/seedcore-mark.png" alt="" />' +
@@ -61,7 +66,7 @@ function detailSidebar(view) {
       '<p class="detail-subtitle">Advisement &amp; intelligence for early-stage solo founders</p>' +
       '<a class="seedcore-button" href="https://seedcore.co" target="_blank" rel="noopener noreferrer">Visit website <span class="arrow" aria-hidden="true">›</span></a>'
     : '<h2 class="detail-title">' + title + '</h2>' +
-      (isAbout ? '<p class="detail-subtitle">25 | Working @ Kaeko Engineering. Based in the Phoenix area.</p>' : '');
+      '<p class="detail-subtitle">' + escapeText(detailSubtitles[view]) + '</p>';
 
   return '<aside class="detail-sidebar surface">' +
     '<div class="detail-top"><a class="back-button" href="/" data-route aria-label="Back to home"><img src="/assets/back.svg" alt="" /></a>' +
@@ -74,6 +79,30 @@ function paragraphs(items) {
   return items.map((item) => '<p class="detail-copy reveal-words">' + escapeText(item) + '</p>').join('');
 }
 
+function projectsContent() {
+  return '<div class="detail-column projects-column"><div class="project-list" aria-label="Projects">' +
+    ["Ellie's Closet", 'Seedcore Intelligence', 'Moss', 'DeskTek'].map((name) =>
+      '<div class="project-row"><span>' + escapeText(name) + '</span><img src="/assets/back.svg" alt="" /></div>'
+    ).join('') + '</div></div>';
+}
+
+function skillsContent() {
+  return '<div class="detail-column skills-column"><div class="skills-grid" aria-label="Skills">' +
+    ['design', 'detail', 'research', 'operations', 'product', 'growth'].map((name) =>
+      '<div class="skill-tile">' + name + '</div>'
+    ).join('') + '</div></div>';
+}
+
+function contactContent() {
+  return '<div class="detail-column contact-column"><form class="contact-form" data-contact-form>' +
+    '<label>Name<input type="text" name="Name" autocomplete="name" required /></label>' +
+    '<label>Email<input type="email" name="Email" autocomplete="email" required /></label>' +
+    '<label>Subject<textarea name="Subject" required></textarea></label>' +
+    '<button type="submit">Submit</button>' +
+    '<p class="form-feedback" role="status" aria-live="polite"></p>' +
+    '</form></div>';
+}
+
 function detail(view) {
   const isSeedcore = view === 'seedcore';
   const isAbout = view === 'about';
@@ -84,8 +113,9 @@ function detail(view) {
     : isAbout
       ? '<div class="detail-column about-column"><img class="about-portrait" src="/assets/eli-halftone.png" alt="Portrait of Eli Cottrell" />' +
         paragraphs(aboutParagraphs) + '</div>'
-      : '<div class="detail-column pending-column"><h1>' + view[0].toUpperCase() + view.slice(1) + '</h1>' +
-        '<p class="detail-copy reveal-words">This section is still taking shape.</p></div>';
+      : view === 'projects' ? projectsContent()
+      : view === 'skills' ? skillsContent()
+      : contactContent();
 
   return '<main class="app-view detail-view ' + view + '-view is-active">' +
     detailSidebar(view) +
@@ -148,4 +178,9 @@ document.addEventListener('click', (event) => {
 });
 
 window.addEventListener('popstate', render);
+document.addEventListener('submit', (event) => {
+  if (!event.target.matches('[data-contact-form]')) return;
+  event.preventDefault();
+  event.target.querySelector('.form-feedback').textContent = 'This form is not connected yet. Please check back soon.';
+});
 render();
