@@ -5,8 +5,8 @@
 :root{font-family:Geist,Arial,sans-serif;color:#4a4a4a;background:#eee;font-synthesis:none}
 *{box-sizing:border-box}
 html,body{margin:0;min-width:0;min-height:100%;overflow-x:hidden;background:#eee}
-button,a{font:inherit}
-button{cursor:pointer}
+button,a{font:inherit;-webkit-tap-highlight-color:transparent}
+button{cursor:pointer;-webkit-appearance:none;appearance:none}
 a{color:inherit;text-decoration:none}
 button:focus-visible,a:focus-visible{outline:2px solid #2e4a7b;outline-offset:4px}
 .app-view{display:flow-root;min-height:100svh}
@@ -19,7 +19,7 @@ button:focus-visible,a:focus-visible{outline:2px solid #2e4a7b;outline-offset:4p
 .social-row{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
 .social-tile{display:grid;place-items:center;min-width:0;border-radius:10px;background:#fafafa;transition:background .2s ease,transform .2s ease}
 .social-tile img{display:block;width:14px;height:14px;opacity:.65}
-.social-tile img[src$="letterboxd-logo.svg"]{width:27px;height:27px;opacity:1}
+.social-tile img[src$="letterboxd-logo.svg"]{width:27px;height:27px;opacity:.5}
 .social-tile:hover{background:#fff;transform:translateY(-2px)}
 .home-main{min-height:100svh;margin-left:479px;display:grid;place-items:center;position:relative}
 .menu{width:310px;transform:translateX(4px)}
@@ -84,12 +84,14 @@ button:focus-visible,a:focus-visible{outline:2px solid #2e4a7b;outline-offset:4p
 .primary-card.card-enter{animation:card-in .46s cubic-bezier(.16,1,.3,1) both}
 .transition-secondary.secondary-exit{pointer-events:none;animation:secondary-out .2s ease both}
 .transition-secondary.secondary-enter{animation:secondary-in .38s .09s ease both}
-@keyframes card-out{to{opacity:0;transform:translateY(-28px)}}
-@keyframes card-in{from{opacity:0;transform:translateY(-28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes card-out{to{opacity:0;transform:translateX(-28px)}}
+@keyframes card-in{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:translateX(0)}}
 @keyframes secondary-out{to{opacity:0;transform:translateY(-8px)}}
 @keyframes secondary-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 @keyframes word-in{to{opacity:1;filter:blur(0);transform:translateY(0)}}
 @media(max-width:1199.98px){
+  .primary-card.card-exit{animation-name:mobile-card-out}
+  .primary-card.card-enter{animation-name:mobile-card-in}
   .home-left{position:relative;inset:auto;width:auto;margin:12px 12px 0;grid-template-rows:244px 32px;gap:7px}
   .home-card{padding:18px}
   .home-intro{order:2;max-width:310px;font-size:15px;line-height:1.42}
@@ -127,6 +129,8 @@ button:focus-visible,a:focus-visible{outline:2px solid #2e4a7b;outline-offset:4p
   .skill-tile{height:118px}
   .contact-form{gap:21px}
   .projects-view .detail-main .footer-links,.skills-view .detail-main .footer-links,.contact-view .detail-main .footer-links{margin-top:auto;padding-top:80px}
+  @keyframes mobile-card-out{to{opacity:0;transform:translateY(-28px)}}
+  @keyframes mobile-card-in{from{opacity:0;transform:translateY(-28px)}to{opacity:1;transform:translateY(0)}}
 }
 @media(max-width:359px){.detail-main{padding-left:24px;padding-right:24px}.menu{width:calc(100% - 70px)}.footer-links{gap:20px;font-size:10px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}.word{opacity:1;filter:none;transform:none}}
