@@ -26,7 +26,7 @@ function home() {
     ['Email', 'mail.svg'],
     ['GitHub', 'github.svg'],
     ['Instagram', 'instagram.svg'],
-    ['Three rings', 'three-rings.svg'],
+    ['Letterboxd', 'letterboxd-logo.svg'],
     ['TikTok', 'tiktok.svg']
   ].map(([label, icon]) =>
     '<span class="social-tile" title="' + label + ' link coming soon"><img src="/assets/' + icon + '" alt="" /></span>'

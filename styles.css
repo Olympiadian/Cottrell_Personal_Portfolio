@@ -19,7 +19,7 @@ button:focus-visible,a:focus-visible{outline:2px solid #2e4a7b;outline-offset:4p
 .social-row{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
 .social-tile{display:grid;place-items:center;min-width:0;border-radius:10px;background:#fafafa;transition:background .2s ease,transform .2s ease}
 .social-tile img{display:block;width:14px;height:14px;opacity:.65}
-.social-tile img[src$="three-rings.svg"]{width:27px;height:27px}
+.social-tile img[src$="letterboxd-logo.svg"]{width:27px;height:27px;opacity:1}
 .social-tile:hover{background:#fff;transform:translateY(-2px)}
 .home-main{min-height:100svh;margin-left:479px;display:grid;place-items:center;position:relative}
 .menu{width:310px;transform:translateX(4px)}
