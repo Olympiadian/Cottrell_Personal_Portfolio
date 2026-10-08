@@ -11,6 +11,7 @@ const seedcoreParagraphs = [
 ];
 
 const views = new Set(['seedcore', 'about', 'projects', 'skills', 'contact']);
+const allViews = new Set(['home', ...views]);
 const detailSubtitles = {
   about: '25 | Working @ Kaeko Engineering. Based in the Phoenix area.',
   projects: "A mix of recent things I've built that are worth exploring.",
@@ -40,18 +41,18 @@ function home() {
 
   const menu = ['Seedcore', 'About', 'Projects', 'Skills', 'Contact'].map((item) => {
     const icon = '<img src="/assets/circle-dot.svg" alt="" />';
-    return '<a class="menu-row" href="/' + item.toLowerCase() + '" data-route><span>' + item + '</span>' + icon + '</a>';
+    return '<button class="menu-row" type="button" data-view="' + item.toLowerCase() + '"><span>' + item + '</span>' + icon + '</button>';
   }).join('');
 
   return '<main class="app-view home-view is-active">' +
     '<div class="home-left">' +
-      '<section class="home-card surface" aria-labelledby="home-name">' +
+      '<section class="home-card surface primary-card" aria-labelledby="home-name">' +
         '<p class="home-intro">Currently in semi-conductor project management. Focused on other things.</p>' +
         '<div class="home-identity"><h1 id="home-name">Eli Cottrell</h1><p>Creative Technologist</p></div>' +
       '</section>' +
-      '<div class="social-row" aria-label="Social links coming soon">' + social + '</div>' +
+      '<div class="social-row transition-secondary" aria-label="Social links coming soon">' + social + '</div>' +
     '</div>' +
-    '<section class="home-main" aria-label="Portfolio navigation">' +
+    '<section class="home-main transition-secondary" aria-label="Portfolio navigation">' +
       '<nav class="menu">' + menu + '</nav>' + footer() +
     '</section>' +
   '</main>';
@@ -68,8 +69,8 @@ function detailSidebar(view) {
     : '<h2 class="detail-title">' + title + '</h2>' +
       '<p class="detail-subtitle">' + escapeText(detailSubtitles[view]) + '</p>';
 
-  return '<aside class="detail-sidebar surface">' +
-    '<div class="detail-top"><a class="back-button" href="/" data-route aria-label="Back to home"><img src="/assets/back.svg" alt="" /></a>' +
+  return '<aside class="detail-sidebar surface primary-card">' +
+    '<div class="detail-top"><button class="back-button" type="button" data-view="home" aria-label="Back to home"><img src="/assets/back.svg" alt="" /></button>' +
       '<span class="detail-tag">' + view + '</span></div>' +
     '<div class="detail-bottom">' + bottom + '</div>' +
   '</aside>';
@@ -119,18 +120,16 @@ function detail(view) {
 
   return '<main class="app-view detail-view ' + view + '-view is-active">' +
     detailSidebar(view) +
-    '<section class="detail-main" aria-label="' + (isSeedcore ? 'Seedcore' : isAbout ? 'About Eli Cottrell' : view[0].toUpperCase() + view.slice(1)) + '">' +
+    '<section class="detail-main transition-secondary" aria-label="' + (isSeedcore ? 'Seedcore' : isAbout ? 'About Eli Cottrell' : view[0].toUpperCase() + view.slice(1)) + '">' +
       content + footer() +
     '</section>' +
   '</main>';
 }
 
-function currentView() {
+function initialView() {
   const path = window.location.pathname.replace(/\/+$/, '').toLowerCase();
   const route = path.slice(1);
   if (views.has(route)) return route;
-  const hashRoute = window.location.hash.slice(1).toLowerCase();
-  if (views.has(hashRoute)) return hashRoute;
   return 'home';
 }
 
@@ -157,30 +156,71 @@ function animateWords() {
   });
 }
 
-function render() {
-  const view = currentView();
+let activeView = initialView();
+let transitionInProgress = false;
+let queuedView = null;
+
+if (window.location.pathname !== '/' || window.location.hash) {
+  history.replaceState({}, '', '/');
+}
+
+function render(view, animateEntrance = false) {
   app.innerHTML = view === 'home' ? home() : detail(view);
   document.body.dataset.view = view;
   document.title = view === 'home'
     ? 'Eli Cottrell — Creative Technologist'
     : view[0].toUpperCase() + view.slice(1) + ' — Eli Cottrell';
   animateWords();
+
+  if (animateEntrance) {
+    const card = app.querySelector('.primary-card');
+    const secondary = app.querySelectorAll('.transition-secondary');
+    card?.classList.add('card-enter');
+    secondary.forEach((element) => element.classList.add('secondary-enter'));
+  }
+}
+
+function changeView(nextView) {
+  if (!allViews.has(nextView) || nextView === activeView) return;
+  if (transitionInProgress) {
+    queuedView = nextView;
+    return;
+  }
+
+  transitionInProgress = true;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const exitDuration = reduceMotion ? 0 : 250;
+  const entranceDuration = reduceMotion ? 0 : 470;
+  app.querySelector('.primary-card')?.classList.add('card-exit');
+  app.querySelectorAll('.transition-secondary').forEach((element) => element.classList.add('secondary-exit'));
+
+  window.setTimeout(() => {
+    activeView = nextView;
+    render(activeView, true);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+
+    window.setTimeout(() => {
+      transitionInProgress = false;
+      if (queuedView && queuedView !== activeView) {
+        const pendingView = queuedView;
+        queuedView = null;
+        changeView(pendingView);
+      } else {
+        queuedView = null;
+      }
+    }, entranceDuration);
+  }, exitDuration);
 }
 
 document.addEventListener('click', (event) => {
-  const link = event.target.closest('a[data-route]');
-  if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-  event.preventDefault();
-  const path = new URL(link.href).pathname;
-  if (window.location.pathname !== path) history.pushState({}, '', path);
-  render();
-  window.scrollTo({ top: 0, behavior: 'instant' });
+  const control = event.target.closest('[data-view]');
+  if (!control) return;
+  changeView(control.dataset.view);
 });
 
-window.addEventListener('popstate', render);
 document.addEventListener('submit', (event) => {
   if (!event.target.matches('[data-contact-form]')) return;
   event.preventDefault();
   event.target.querySelector('.form-feedback').textContent = 'This form is not connected yet. Please check back soon.';
 });
-render();
+render(activeView);
