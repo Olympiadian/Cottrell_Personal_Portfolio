@@ -10,7 +10,7 @@ const seedcoreParagraphs = [
   "It is meant to be a meaningful alternative to the clutter of information out there. Designed for the beginning business, made to overcome the difficulty of the early stages."
 ];
 
-const pendingItems = new Set(['Projects', 'Skills', 'Contact']);
+const views = new Set(['seedcore', 'about', 'projects', 'skills', 'contact']);
 
 function escapeText(value) {
   return value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
@@ -34,9 +34,6 @@ function home() {
 
   const menu = ['Seedcore', 'About', 'Projects', 'Skills', 'Contact'].map((item) => {
     const icon = '<img src="/assets/circle-dot.svg" alt="" />';
-    if (pendingItems.has(item)) {
-      return '<span class="menu-row is-pending" aria-disabled="true" title="' + item + ' is coming soon"><span>' + item + '</span>' + icon + '</span>';
-    }
     return '<a class="menu-row" href="/' + item.toLowerCase() + '" data-route><span>' + item + '</span>' + icon + '</a>';
   }).join('');
 
@@ -56,13 +53,15 @@ function home() {
 
 function detailSidebar(view) {
   const isSeedcore = view === 'seedcore';
+  const isAbout = view === 'about';
+  const title = view[0].toUpperCase() + view.slice(1);
   const bottom = isSeedcore
     ? '<img class="seedcore-logo" src="/assets/seedcore-mark.png" alt="" />' +
       '<h2 class="detail-title">Seedcore</h2>' +
       '<p class="detail-subtitle">Advisement &amp; intelligence for early-stage solo founders</p>' +
       '<a class="seedcore-button" href="https://seedcore.co" target="_blank" rel="noopener noreferrer">Visit website <span class="arrow" aria-hidden="true">›</span></a>'
-    : '<h2 class="detail-title">About</h2>' +
-      '<p class="detail-subtitle">25 | Working @ Kaeko Engineering. Based in the Phoenix area.</p>';
+    : '<h2 class="detail-title">' + title + '</h2>' +
+      (isAbout ? '<p class="detail-subtitle">25 | Working @ Kaeko Engineering. Based in the Phoenix area.</p>' : '');
 
   return '<aside class="detail-sidebar surface">' +
     '<div class="detail-top"><a class="back-button" href="/" data-route aria-label="Back to home"><img src="/assets/back.svg" alt="" /></a>' +
@@ -77,16 +76,20 @@ function paragraphs(items) {
 
 function detail(view) {
   const isSeedcore = view === 'seedcore';
+  const isAbout = view === 'about';
   const content = isSeedcore
     ? '<div class="detail-column seedcore-column"><h1>seedcore.co</h1>' +
       paragraphs(seedcoreParagraphs) +
       '<span class="essay-link" aria-disabled="true" title="Essay link coming soon">Read our essay <span class="arrow" aria-hidden="true">›</span></span></div>'
-    : '<div class="detail-column about-column"><img class="about-portrait" src="/assets/eli-halftone.png" alt="Portrait of Eli Cottrell" />' +
-      paragraphs(aboutParagraphs) + '</div>';
+    : isAbout
+      ? '<div class="detail-column about-column"><img class="about-portrait" src="/assets/eli-halftone.png" alt="Portrait of Eli Cottrell" />' +
+        paragraphs(aboutParagraphs) + '</div>'
+      : '<div class="detail-column pending-column"><h1>' + view[0].toUpperCase() + view.slice(1) + '</h1>' +
+        '<p class="detail-copy reveal-words">This section is still taking shape.</p></div>';
 
-  return '<main class="app-view detail-view ' + (isSeedcore ? 'seedcore-view' : 'about-view') + ' is-active">' +
+  return '<main class="app-view detail-view ' + view + '-view is-active">' +
     detailSidebar(view) +
-    '<section class="detail-main" aria-label="' + (isSeedcore ? 'Seedcore' : 'About Eli Cottrell') + '">' +
+    '<section class="detail-main" aria-label="' + (isSeedcore ? 'Seedcore' : isAbout ? 'About Eli Cottrell' : view[0].toUpperCase() + view.slice(1)) + '">' +
       content + footer() +
     '</section>' +
   '</main>';
@@ -94,8 +97,10 @@ function detail(view) {
 
 function currentView() {
   const path = window.location.pathname.replace(/\/+$/, '').toLowerCase();
-  if (path === '/about' || window.location.hash === '#about') return 'about';
-  if (path === '/seedcore' || window.location.hash === '#seedcore') return 'seedcore';
+  const route = path.slice(1);
+  if (views.has(route)) return route;
+  const hashRoute = window.location.hash.slice(1).toLowerCase();
+  if (views.has(hashRoute)) return hashRoute;
   return 'home';
 }
 
@@ -128,7 +133,7 @@ function render() {
   document.body.dataset.view = view;
   document.title = view === 'home'
     ? 'Eli Cottrell — Creative Technologist'
-    : (view === 'about' ? 'About' : 'Seedcore') + ' — Eli Cottrell';
+    : view[0].toUpperCase() + view.slice(1) + ' — Eli Cottrell';
   animateWords();
 }
 
