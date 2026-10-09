@@ -141,18 +141,12 @@ if (window.location.pathname !== '/' || window.location.hash) {
   history.replaceState({}, '', '/');
 }
 
-function render(view, animateEntrance = false) {
+function render(view) {
   app.innerHTML = view === 'home' ? home() : detail(view);
   document.body.dataset.view = view;
   document.title = view === 'home'
     ? 'Eli Cottrell — Creative Technologist'
     : view[0].toUpperCase() + view.slice(1) + ' — Eli Cottrell';
-  if (animateEntrance) {
-    const card = app.querySelector('.primary-card');
-    const secondary = app.querySelectorAll('.transition-secondary');
-    card?.classList.add('card-enter');
-    secondary.forEach((element) => element.classList.add('secondary-enter'));
-  }
 }
 
 function afterAnimation(element, callback, fallbackDuration = 1200) {
@@ -199,23 +193,35 @@ function changeView(nextView) {
   });
 
   activeView = nextView;
-  render(activeView, true);
+  render(activeView);
   window.scrollTo({ top: 0, behavior: 'instant' });
 
-  afterAnimation(outgoingCard, () => outgoingView.remove());
-
   const incomingCard = app.querySelector('.primary-card');
-  afterAnimation(incomingCard, () => {
-    incomingCard.classList.remove('card-enter');
-    app.querySelectorAll('.transition-secondary').forEach((element) => element.classList.remove('secondary-enter'));
-    transitionInProgress = false;
-    if (queuedView && queuedView !== activeView) {
-      const pendingView = queuedView;
-      queuedView = null;
-      changeView(pendingView);
-    } else {
-      queuedView = null;
-    }
+  const incomingSecondary = app.querySelectorAll('.transition-secondary');
+  incomingCard?.classList.add('card-pending');
+  incomingSecondary.forEach((element) => element.classList.add('secondary-pending'));
+
+  afterAnimation(outgoingCard, () => {
+    outgoingView.remove();
+    incomingCard?.classList.remove('card-pending');
+    incomingCard?.classList.add('card-enter');
+    incomingSecondary.forEach((element) => {
+      element.classList.remove('secondary-pending');
+      element.classList.add('secondary-enter');
+    });
+
+    afterAnimation(incomingCard, () => {
+      incomingCard.classList.remove('card-enter');
+      incomingSecondary.forEach((element) => element.classList.remove('secondary-enter'));
+      transitionInProgress = false;
+      if (queuedView && queuedView !== activeView) {
+        const pendingView = queuedView;
+        queuedView = null;
+        changeView(pendingView);
+      } else {
+        queuedView = null;
+      }
+    });
   });
 }
 
