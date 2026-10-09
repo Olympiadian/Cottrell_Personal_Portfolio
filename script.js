@@ -211,8 +211,6 @@ function changeView(nextView) {
     });
 
     afterAnimation(incomingCard, () => {
-      incomingCard.classList.remove('card-enter');
-      incomingSecondary.forEach((element) => element.classList.remove('secondary-enter'));
       transitionInProgress = false;
       if (queuedView && queuedView !== activeView) {
         const pendingView = queuedView;
