@@ -14,7 +14,7 @@ button:focus-visible,a:focus-visible{outline:2px solid #2e4a7b;outline-offset:4p
 .app-view{display:flow-root;min-height:100svh}
 .surface{background:#fafafa;border-radius:10px;box-shadow:0 1px 1px rgba(0,0,0,.025)}
 .home-left{position:fixed;inset:12px auto 12px 12px;width:467px;display:grid;grid-template-rows:minmax(0,1fr) 46px;gap:8px}
-.home-card{display:flex;flex-direction:column;justify-content:space-between;padding:35px;min-height:0}
+.home-card{display:flex;flex-direction:column;justify-content:space-between;padding:35px;min-height:0;background-image:url('/assets/card-desktop-home.png');background-position:center;background-size:cover;background-repeat:no-repeat}
 .home-intro{max-width:380px;margin:0;font-family:Hedvig,Geist,sans-serif;color:#777;font-size:15px;line-height:1.48;letter-spacing:-.02em}
 .home-identity h1{margin:0;color:#303030;font-size:24px;font-weight:500;letter-spacing:-.04em;line-height:1.2}
 .home-identity p{margin:8px 0 0;color:#777;font-family:Hedvig,Geist,sans-serif;font-size:16px;line-height:1.35}
@@ -31,7 +31,7 @@ button:focus-visible,a:focus-visible{outline:2px solid #2e4a7b;outline-offset:4p
 .menu-row:hover img{transform:scale(1.18);opacity:.72}
 .footer-links{position:absolute;left:50%;bottom:18px;display:flex;gap:38px;transform:translateX(-50%);white-space:nowrap;color:#606060;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:-.03em}
 .footer-links span{cursor:default}
-.detail-sidebar{position:fixed;inset:12px auto 12px 12px;width:467px;padding:35px;display:flex;flex-direction:column;justify-content:space-between}
+.detail-sidebar{position:fixed;inset:12px auto 12px 12px;width:467px;padding:35px;display:flex;flex-direction:column;justify-content:space-between;background-image:url('/assets/card-desktop-other.png');background-position:center;background-size:cover;background-repeat:no-repeat}
 .detail-top{display:flex;align-items:center;justify-content:space-between;min-height:30px}
 .back-button{width:24px;height:30px;display:grid;place-items:center;padding:0;border:0;background:none;color:#555;transition:transform .2s ease,opacity .2s ease}
 .back-button img{display:block;width:19px;height:19px}
@@ -96,9 +96,8 @@ button:focus-visible,a:focus-visible{outline:2px solid #2e4a7b;outline-offset:4p
   :root{--card-exit-ms:320;--card-enter-ms:560;--secondary-exit-ms:220;--secondary-enter-ms:440}
   .primary-card.card-exit{animation-name:mobile-card-out}
   .primary-card.card-enter{animation-name:mobile-card-in}
-  .primary-card{background-image:url('/assets/mobile-frame.png');background-position:center;background-size:cover;background-repeat:no-repeat}
   .home-left{position:relative;inset:auto;width:auto;margin:12px 12px 0;grid-template-rows:284px 32px;gap:7px}
-  .home-card{padding:18px}
+  .home-card{padding:18px;background-image:url('/assets/card-mobile-home.png')}
   .home-intro{order:2;max-width:310px;font-size:15px;line-height:1.42}
   .home-identity{order:1}
   .home-identity h1{font-size:20px}
@@ -111,7 +110,7 @@ button:focus-visible,a:focus-visible{outline:2px solid #2e4a7b;outline-offset:4p
   .menu-row{height:36px;font-size:16px}
   .menu-row img{width:14px;height:14px}
   .footer-links{position:static;transform:none;margin-top:auto;padding-bottom:22px;gap:34px;font-size:11px}
-  .detail-sidebar{position:relative;inset:auto;width:auto;height:284px;margin:12px;padding:22px 18px 16px}
+  .detail-sidebar{position:relative;inset:auto;width:auto;height:284px;margin:12px;padding:22px 18px 16px;background-image:url('/assets/card-mobile-other.png')}
   .detail-tag{font-size:14px}
   .detail-title{font-size:23px}
   .detail-subtitle{font-size:14px;line-height:1.4;margin-top:6px}
