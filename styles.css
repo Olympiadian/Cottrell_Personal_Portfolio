@@ -2,10 +2,10 @@
 @font-face{font-family:Hedvig;src:url('/assets/hedvig-latin.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
 @font-face{font-family:'Geist Mono';src:url('/assets/geist-mono-latin.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
 @font-face{font-family:'Clash Grotesk';src:url('/assets/clash-grotesk-medium.woff2') format('woff2');font-style:normal;font-weight:500;font-display:swap}
-:root{--card-exit-ms:420;--card-enter-ms:720;--secondary-exit-ms:300;--secondary-enter-ms:560;font-family:Geist,Arial,sans-serif;color:#4a4a4a;background-color:#eee;font-synthesis:none}
+:root{--card-exit-ms:420;--card-enter-ms:720;--secondary-exit-ms:300;--secondary-enter-ms:560;font-family:Geist,Arial,sans-serif;color:#4a4a4a;background-color:#ebebeb;font-synthesis:none}
 *{box-sizing:border-box}
-html,body{margin:0;min-width:0;min-height:100%;overflow-x:hidden;background-color:#eee}
-html{background-image:url('/assets/site-background-desktop.png');background-position:center;background-size:cover;background-repeat:no-repeat;background-attachment:fixed;scrollbar-width:none;-ms-overflow-style:none}
+html,body{margin:0;min-width:0;min-height:100%;overflow-x:hidden;background-color:#ebebeb}
+html{scrollbar-width:none;-ms-overflow-style:none}
 body{background:transparent}
 html::-webkit-scrollbar{display:none}
 button,a{font:inherit;-webkit-tap-highlight-color:transparent}
@@ -84,7 +84,6 @@ button:focus-visible,a:focus-visible{outline:2px solid #2e4a7b;outline-offset:4p
 .form-feedback:empty{display:none}
 .essay-link{display:inline-flex;align-items:center;gap:15px;margin-top:24px;color:#4a4a4a;font-size:14px;font-weight:500;line-height:21px;cursor:default}
 .essay-link .arrow{font-size:19px;font-weight:300}
-.home-main,.home-main *:not(input):not(textarea),.detail-main,.detail-main *:not(input):not(textarea){color:#fff!important}
 .detail-main .footer-links{bottom:18px}
 .reveal-words{opacity:1;transform:none}
 .transition-ghost-view{position:fixed;inset:0;z-index:10;width:100%;height:100%;overflow:hidden;pointer-events:none}
@@ -101,7 +100,6 @@ button:focus-visible,a:focus-visible{outline:2px solid #2e4a7b;outline-offset:4p
 @keyframes secondary-in{from{opacity:0;transform:translate3d(0,12px,0)}to{opacity:1;transform:translate3d(0,0,0)}}
 @media(max-width:1199.98px){
   :root{--card-exit-ms:320;--card-enter-ms:560;--secondary-exit-ms:220;--secondary-enter-ms:440}
-  html{background-image:url('/assets/site-background-mobile.png')}
   .primary-card.card-exit{animation-name:mobile-card-out}
   .primary-card.card-enter{animation-name:mobile-card-in}
   .home-left{position:relative;inset:auto;width:auto;margin:12px 12px 0;grid-template-rows:284px 32px;gap:7px}
