@@ -84,6 +84,7 @@ button:focus-visible,a:focus-visible{outline:2px solid #2e4a7b;outline-offset:4p
 .form-feedback:empty{display:none}
 .essay-link{display:inline-flex;align-items:center;gap:15px;margin-top:24px;color:#4a4a4a;font-size:14px;font-weight:500;line-height:21px;cursor:default}
 .essay-link .arrow{font-size:19px;font-weight:300}
+.app-view,.app-view *{color:#fff!important}
 .detail-main .footer-links{bottom:18px}
 .reveal-words{opacity:1;transform:none}
 .transition-ghost-view{position:fixed;inset:0;z-index:10;width:100%;height:100%;overflow:hidden;pointer-events:none}
