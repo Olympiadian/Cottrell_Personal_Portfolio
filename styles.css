@@ -96,6 +96,7 @@ button:focus-visible,a:focus-visible{outline:2px solid #2e4a7b;outline-offset:4p
   :root{--card-exit-ms:320;--card-enter-ms:560;--secondary-exit-ms:220;--secondary-enter-ms:440}
   .primary-card.card-exit{animation-name:mobile-card-out}
   .primary-card.card-enter{animation-name:mobile-card-in}
+  .primary-card{background-image:url('/assets/mobile-frame.png');background-position:center;background-size:cover;background-repeat:no-repeat}
   .home-left{position:relative;inset:auto;width:auto;margin:12px 12px 0;grid-template-rows:284px 32px;gap:7px}
   .home-card{padding:18px}
   .home-intro{order:2;max-width:310px;font-size:15px;line-height:1.42}
