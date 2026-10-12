@@ -4,8 +4,9 @@
 @font-face{font-family:'Clash Grotesk';src:url('/assets/clash-grotesk-medium.woff2') format('woff2');font-style:normal;font-weight:500;font-display:swap}
 :root{--card-exit-ms:420;--card-enter-ms:720;--secondary-exit-ms:300;--secondary-enter-ms:560;font-family:Geist,Arial,sans-serif;color:#4a4a4a;background:#eee;font-synthesis:none}
 *{box-sizing:border-box}
-html,body{margin:0;min-width:0;min-height:100%;overflow-x:hidden;background:#eee}
-html{scrollbar-width:none;-ms-overflow-style:none}
+html,body{margin:0;min-width:0;min-height:100%;overflow-x:hidden;background-color:#eee}
+html{background-image:url('/assets/site-background-desktop.png');background-position:center;background-size:cover;background-repeat:no-repeat;background-attachment:fixed;scrollbar-width:none;-ms-overflow-style:none}
+body{background:transparent}
 html::-webkit-scrollbar{display:none}
 button,a{font:inherit;-webkit-tap-highlight-color:transparent}
 button{cursor:pointer;-webkit-appearance:none;appearance:none}
@@ -99,6 +100,7 @@ button:focus-visible,a:focus-visible{outline:2px solid #2e4a7b;outline-offset:4p
 @keyframes secondary-in{from{opacity:0;transform:translate3d(0,12px,0)}to{opacity:1;transform:translate3d(0,0,0)}}
 @media(max-width:1199.98px){
   :root{--card-exit-ms:320;--card-enter-ms:560;--secondary-exit-ms:220;--secondary-enter-ms:440}
+  html{background-image:url('/assets/site-background-mobile.png')}
   .primary-card.card-exit{animation-name:mobile-card-out}
   .primary-card.card-enter{animation-name:mobile-card-in}
   .home-left{position:relative;inset:auto;width:auto;margin:12px 12px 0;grid-template-rows:284px 32px;gap:7px}
