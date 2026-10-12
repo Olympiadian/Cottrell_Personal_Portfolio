@@ -31,7 +31,12 @@ button:focus-visible,a:focus-visible{outline:2px solid #2e4a7b;outline-offset:4p
 .menu-row:hover img{transform:scale(1.18);opacity:.72}
 .footer-links{position:absolute;left:50%;bottom:18px;display:flex;gap:38px;transform:translateX(-50%);white-space:nowrap;color:#606060;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:-.03em}
 .footer-links span{cursor:default}
-.detail-sidebar{position:fixed;inset:12px auto 12px 12px;width:467px;padding:35px;display:flex;flex-direction:column;justify-content:space-between;background-image:url('/assets/card-desktop-other.png');background-position:center;background-size:cover;background-repeat:no-repeat}
+.detail-sidebar{position:fixed;inset:12px auto 12px 12px;width:467px;padding:35px;display:flex;flex-direction:column;justify-content:space-between;background-position:center;background-size:cover;background-repeat:no-repeat}
+.seedcore-view .detail-sidebar{background-image:url('/assets/card-desktop-seedcore.png')}
+.about-view .detail-sidebar{background-image:url('/assets/card-desktop-about.png')}
+.projects-view .detail-sidebar{background-image:url('/assets/card-desktop-projects.png')}
+.skills-view .detail-sidebar{background-image:url('/assets/card-desktop-skills.png')}
+.contact-view .detail-sidebar{background-image:url('/assets/card-desktop-contact.png')}
 .detail-top{display:flex;align-items:center;justify-content:space-between;min-height:30px}
 .back-button{width:24px;height:30px;display:grid;place-items:center;padding:0;border:0;background:none;color:#555;transition:transform .2s ease,opacity .2s ease}
 .back-button img{display:block;width:19px;height:19px}
@@ -110,7 +115,12 @@ button:focus-visible,a:focus-visible{outline:2px solid #2e4a7b;outline-offset:4p
   .menu-row{height:36px;font-size:16px}
   .menu-row img{width:14px;height:14px}
   .footer-links{position:static;transform:none;margin-top:auto;padding-bottom:22px;gap:34px;font-size:11px}
-  .detail-sidebar{position:relative;inset:auto;width:auto;height:284px;margin:12px;padding:22px 18px 16px;background-image:url('/assets/card-mobile-other.png')}
+  .detail-sidebar{position:relative;inset:auto;width:auto;height:284px;margin:12px;padding:22px 18px 16px}
+  .seedcore-view .detail-sidebar{background-image:url('/assets/card-mobile-seedcore.png')}
+  .about-view .detail-sidebar{background-image:url('/assets/card-mobile-about.png')}
+  .projects-view .detail-sidebar{background-image:url('/assets/card-mobile-projects.png')}
+  .skills-view .detail-sidebar{background-image:url('/assets/card-mobile-skills.png')}
+  .contact-view .detail-sidebar{background-image:url('/assets/card-mobile-contact.png')}
   .detail-tag{font-size:14px}
   .detail-title{font-size:23px}
   .detail-subtitle{font-size:14px;line-height:1.4;margin-top:6px}
